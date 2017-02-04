@@ -1,18 +1,36 @@
 import { Component, NgZone } from '@angular/core';
 import { NFC, Ndef } from 'ionic-native';
-import { NavController, AlertController, Platform } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
+import { DiscountCodes } from '../../providers/discount-codes';
 
+/*
+  Generated class for the Scan page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+*/
 @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html'
+  selector: 'page-scan',
+  templateUrl: 'scan.html',
+  providers: [DiscountCodes]
 })
-export class ContactPage {
+export class ScanPage {
 
+  constructor(public navCtrl: NavController,
+              private Alert: AlertController,
+              private zone: NgZone,
+              private platform: Platform,
+              public navParams: NavParams,
+              discountCodesService: DiscountCodes) {
+    console.log(discountCodesService.getCode());
+  }
 
-  constructor(public navCtrl: NavController, private Alert: AlertController, private zone: NgZone, private platform: Platform) {
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ScanPage');
 
 
   }
+
 
   ionViewWillEnter(){
     this.platform.ready().then(() => {
@@ -22,22 +40,21 @@ export class ContactPage {
 
   cekNFC() {
     NFC.enabled().then(() => {
-          console.log("NFC is ready");
-          this.addListenNFC();
-          // IF Disabled
-        })
-        .catch(err => {
-          console.log(err);
-          let alert = this.Alert.create({
-            subTitle : "NFC DISABLED",
-            buttons: [{ text : "OK"},{ text : "Go Setting",
-              handler : () => {
-                NFC.showSettings();
-              }
-            }]
-          });
-          alert.present();
-        });
+      console.log("NFC is ready");
+      this.addListenNFC();
+      // IF Disabled
+    }).catch(err => {
+      console.log(err);
+      let alert = this.Alert.create({
+        subTitle : "NFC DISABLED",
+        buttons: [{ text : "OK"},{ text : "Go Setting",
+          handler : () => {
+            NFC.showSettings();
+          }
+        }]
+      });
+      alert.present();
+    });
   }
 
   addListenNFC() {
@@ -139,5 +156,6 @@ export class ContactPage {
     });
     alert.present();
   }
+
 
 }
