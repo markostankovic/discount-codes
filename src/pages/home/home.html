@@ -1,16 +1,32 @@
-<ion-header>
-  <ion-navbar>
+<ion-header #mainMenu>
+  <ion-navbar color="dark">
     <button menuToggle ion-button icon-only>
       <ion-icon name='menu'></ion-icon>
     </button>
 
-    <ion-title>Home</ion-title>
+    <ion-title>Travelers</ion-title>
   </ion-navbar>
 </ion-header>
 
+<ion-menu [content]="mainMenu">
+  <ion-content>
+    <ion-list>
+      <p>some menu content, could be list items</p>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
 <ion-content padding>
-  <h2>Welcome Travellers</h2>
-  <p>
-    Test Marko
+  <h2>Welcome Travelers</h2>
+  <p *ngIf="code">
+    {{ code.title }}
+    {{ code.code }}
   </p>
+
+  <ion-item>
+    <ion-label color="secondary" floating>Enter your Discount Code</ion-label>
+    <ion-input #newDiscountCode type="number"></ion-input>
+  </ion-item>
+  <button ion-button full color="secondary" (click)="onSubmitNewDiscountCode(newDiscountCode.value); newDiscountCode.value=''">Enter</button>
 </ion-content>
+
